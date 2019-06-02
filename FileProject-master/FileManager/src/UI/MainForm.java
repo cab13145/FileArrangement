@@ -35,107 +35,107 @@ import java.awt.LayoutManager;
 
 public class MainForm extends JFrame implements ActionListener{
 	public static MainForm _instance;
-	//½çÃæ·ÖÀà
+	//ç•Œé¢åˆ†ç±»
 	JPanel p, SortPanel, ActionPanel, ShowPanel, FunctPanel, TreePanel;
-	//Ê÷Öğ½¥
+	//æ ‘é€æ¸
 	JTree BigTree;
 	
 //	FilesTree filesTree;
-	//ÇáÁ¿¼¶ÎÄ¼şÊÔÍ¼£¬°üº¬¹ö¶¯ÌõµÈ
+	//è½»é‡çº§æ–‡ä»¶è¯•å›¾ï¼ŒåŒ…å«æ»šåŠ¨æ¡ç­‰
 	JScrollPane ScrollShow, TreeShow;
-	//µ¥Ñ¡°´Å¥£¬ÏÔÊ¾ÄÇÖÖÀàĞÍµÄÎÄ¼ş
-	JRadioButton AllFiles,Videos,Text,Picture,Music;
-	//Ê÷½Úµã
+	//å•é€‰æŒ‰é’®ï¼Œæ˜¾ç¤ºé‚£ç§ç±»å‹çš„æ–‡ä»¶
+	JRadioButton AllFiles,Videos,Text,Picture,Music,BtnQian;
+	//æ ‘èŠ‚ç‚¹
     DefaultMutableTreeNode node;
-    //°´Å¥
-	JButton PreBtn, LatBtn, GoBtn,SearchDir;
+    //æŒ‰é’®
+	JButton PreBtn, LatBtn, GoBtn,SearchDir,SetName;
 	//
 	ButtonGroup Classify;
-	//ÏÂÀ­ÁĞ±í×é¼ş
+	//ä¸‹æ‹‰åˆ—è¡¨ç»„ä»¶
 	JComboBox SortList, SortType;
-	//µ¥ĞĞÎÄ±¾¿ò
-	JTextField SearchText, GuideText,PositionUrl;
-	//Ñ¡Ôñ¿ò
+	//å•è¡Œæ–‡æœ¬æ¡†
+	JTextField SearchText, GuideText,PositionUrl,Revalue;
+	//é€‰æ‹©æ¡†
 	JCheckBox FileCheck, DirCheck;
-	//±êÇ©×é¼ş
+	//æ ‡ç­¾ç»„ä»¶
 	JLabel SortTxt, SearchTxt, SearchType;
-	//ÅÅĞòÒÀ¾İ
-	String Sort_Items[] = {"ÎÄ¼ş´óĞ¡","ĞŞ¸ÄÊ±¼ä","Ê××ÖÄ¸"};
-	//ÅÅĞòÀàĞÍ
-	String Sort_Type_Items[] = {"ÉıĞò","½µĞò"};
+	//æ’åºä¾æ®
+	String Sort_Items[] = {"æ–‡ä»¶å¤§å°","ä¿®æ”¹æ—¶é—´","é¦–å­—æ¯"};
+	//æ’åºç±»å‹
+	String Sort_Type_Items[] = {"å‡åº","é™åº"};
 	public String Cur_URL = "";
 	String Pre_URL = "";
 	String LatURL = "";
 	String FileURL = "";
-	//¸÷ÀàÎÄ¼ş¸ñÊ½Æ¥ÅäµÄ³õÊ¼»¯
+	//å„ç±»æ–‡ä»¶æ ¼å¼åŒ¹é…çš„åˆå§‹åŒ–
 	List<String> VideoType = Arrays.asList("avi","wmv","rm","rmvb","mpeg1","mpeg2","mpeg4","mp4","3gp","asf","swf","vob","dat","mov","m4v","flv","f4v","mkv","mts","ts","qsv","AVI","WMV","RM","RMVB","MPEG1","MPEG2","MPEG4","MP4","3GP","ASF","SWF","VOB","DAT","MOV","M4V","FLV","F4V","MKV","MTS","TS","QSV");  
 	List<String> GraphType = Arrays.asList("bmp","gif","jpeg","jpeg2000","tiff","psd","png","swf","svg","pcx","dxf","wmf","emf","lic","eps","tga","jpg","BMP","GIF","JPEG","JPEG2000","TIFF","PSD","PNG","SWF","SVG","PCX","DXF","WMF","EMF","LIC","EPS","TGA","JPG");
 	List<String> TxtType = Arrays.asList("txt","doc","docx","wps","pdf","chm","pdg","wdl","xls","xlsx","ppt","pptx","java","c","cpp","py");
 	List<String> MusicType = Arrays.asList("cd","wave","wav","aiff","au","mp3","midi","wma","aac","ape","CD","WAVE","WAV","AIFF","AU","MP3","MIDI","WMA","RealAudio","VQF","OggVorbis","AAC","APE");
 	public Map<String, String> Maps = new HashMap<String,String>();
-	//ÎÄ¼şÁĞ±íµÄÏà¹Ø±äÁ¿
+	//æ–‡ä»¶åˆ—è¡¨çš„ç›¸å…³å˜é‡
 	JList<String> list;
 	public DefaultListModel defaultListModel;
 	public Stack<String> stack, stack_return;
-	//ĞÂ½¨ÓÒ¼üµ¯³ö²Ëµ¥£¬Ñ¡ÔÚÔÚÏßÃæÌí¼Ó
+	//æ–°å»ºå³é”®å¼¹å‡ºèœå•ï¼Œé€‰åœ¨åœ¨çº¿é¢æ·»åŠ 
 	JPopupMenu jPopupMenu = null;
 	JPopupMenu jPopupMenu2 = null;
 	JPopupMenu jPopupMenu3 = null;
-	//ĞÂ½¨ÓÒ¼üµ¯³öÏî£¬Ã»ÓĞ¶¨ÒåÄÚÈİ
+	//æ–°å»ºå³é”®å¼¹å‡ºé¡¹ï¼Œæ²¡æœ‰å®šä¹‰å†…å®¹
 	JMenuItem[] JMIs = new JMenuItem[10];
 	JMenuItem[] JMIs2 = new JMenuItem[5];
-	JMenuItem delete = new JMenuItem("É¾³ı");
-	public Icon[] AllIcons = new Icon[999999];//´æ´¢ËÑË÷µÃµ½µÄÎÄ¼şÍ¼±ê
+	JMenuItem delete = new JMenuItem("åˆ é™¤");
+	public Icon[] AllIcons = new Icon[999999];//å­˜å‚¨æœç´¢å¾—åˆ°çš„æ–‡ä»¶å›¾æ ‡
 	public int Icon_Counter = 0;
-	//±£´æGB,MB,KB,B¶ÔÓ¦µÄ×Ö½ÚÊı£¬·½±ã»»ËãÎÄ¼ş´óĞ¡¼°µ¥Î»
+	//ä¿å­˜GB,MB,KB,Bå¯¹åº”çš„å­—èŠ‚æ•°ï¼Œæ–¹ä¾¿æ¢ç®—æ–‡ä»¶å¤§å°åŠå•ä½
 	long[] Sizes = {1073741824,1048576,1024,1};
 	String[] Size_Names = {"GB", "MB", "KB", "B"};
 	Boolean isSearching = false;
 	private JPanel panel;
 	
-	public MainForm(){//Ö÷½çÃæ
+	public MainForm(){//ä¸»ç•Œé¢
 		this._instance = this;
-		//ÉèÖÃ´°¿ÚÃû
-		this.setTitle("ÎÄ¼şÕûÀíÏµÍ³");
-		//ÉèÖÃ´°¿ÚµÄxÎ»ÖÃ¡¢yÎ»ÖÃ¡¢¿í¡¢¸ß
+		//è®¾ç½®çª—å£å
+		this.setTitle("æ–‡ä»¶æ•´ç†ç³»ç»Ÿ");
+		//è®¾ç½®çª—å£çš„xä½ç½®ã€yä½ç½®ã€å®½ã€é«˜
 		this.setBounds(500, 500, 1200, 650);
-		//³õÊ¼»¯ÈİÆ÷¡¢Ä¬ÈÏ²¼¾Ö
+		//åˆå§‹åŒ–å®¹å™¨ã€é»˜è®¤å¸ƒå±€
 		this.getContentPane().setLayout(null);
-		//µ÷ÓÃº¯ÊıÌí¼Ó×é¼ş
+		//è°ƒç”¨å‡½æ•°æ·»åŠ ç»„ä»¶
 		Init();
-		//½«´°¿ÚÖÁÓÚÆÁÄ»ÖĞ¼ä
+		//å°†çª—å£è‡³äºå±å¹•ä¸­é—´
 		this.setLocationRelativeTo(null);
-		//ÏÔÊ¾×é¼şJFrame
+		//æ˜¾ç¤ºç»„ä»¶JFrame
 		this.setVisible(true);
-		//µ¥»÷¹Ø±ÕÊ±µÄ²Ù×÷
+		//å•å‡»å…³é—­æ—¶çš„æ“ä½œ
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		//²»¿Éµ÷Õû´°¿Ú´óĞ¡
+		//ä¸å¯è°ƒæ•´çª—å£å¤§å°
 		this.setResizable(false);
 	}
 	
 	public void Init(){
-		//¸÷¸öpanel³õÊ¼»¯
+		//å„ä¸ªpanelåˆå§‹åŒ–
 		p = new JPanel();
 		SortPanel = new JPanel();
 		ActionPanel = new JPanel();
 		ShowPanel = new JPanel();
 		FunctPanel = new JPanel();
 		TreePanel = new JPanel();
-		//ÉèÖÃ×é¼ş×ø±êºÍ¿í¸ß£¬ÉèÖÃÁ÷Ê½²¼¾Ö
+		//è®¾ç½®ç»„ä»¶åæ ‡å’Œå®½é«˜ï¼Œè®¾ç½®æµå¼å¸ƒå±€
 		p.setBounds(0, 50, 350, 100);
 		p.setLayout(new FlowLayout(FlowLayout.LEFT,15,5));
     
-		//¶¥²¿²éÑ¯ËÑË÷Ä£¿é
+		//é¡¶éƒ¨æŸ¥è¯¢æœç´¢æ¨¡å—
 		SortPanel.setSize(200, 80);
         SortPanel.setLayout(new FlowLayout());
         
-        //Àà±ğJRadioButton³õÊ¼»¯
-        AllFiles = new JRadioButton("ËùÓĞÎÄ¼ş");
+        //ç±»åˆ«JRadioButtonåˆå§‹åŒ–
+        AllFiles = new JRadioButton("æ‰€æœ‰æ–‡ä»¶");
         AllFiles.setSelected(true);
-		Videos = new JRadioButton("ÊÓÆµ");
-		Picture  = new JRadioButton("Í¼Æ¬");
-		Music = new JRadioButton("ÒôÀÖ");
-		Text = new JRadioButton("ÎÄµµ");
+		Videos = new JRadioButton("è§†é¢‘");
+		Picture  = new JRadioButton("å›¾ç‰‡");
+		Music = new JRadioButton("éŸ³ä¹");
+		Text = new JRadioButton("æ–‡æ¡£");
 		Videos.addActionListener(this);
 		Picture.addActionListener(this);
 		Music.addActionListener(this);
@@ -149,23 +149,23 @@ public class MainForm extends JFrame implements ActionListener{
 		Classify.add(Music);
 		Classify.add(Text);
 		
-		SortTxt = new JLabel("ÅÅĞò");
+		SortTxt = new JLabel("æ’åº");
 		SortList = new JComboBox(Sort_Items);
 		SortType = new JComboBox(Sort_Type_Items);
 		SortPanel.add(SortTxt);
 		SortPanel.add(SortList);
 		SortPanel.add(SortType);
 		
-//		SearchTxt = new JLabel("ËÑË÷");
+//		SearchTxt = new JLabel("æœç´¢");
 //		SearchTxt.setBounds(5,5,50,30);
 //		SearchText = new JTextField(15);
 //		SearchText.setBounds(50, 5, 120, 30);
 //		SearchText.addActionListener(this);		
 		
-//		SearchType = new JLabel("ËÑË÷ÀàĞÍ");		
-//		FileCheck = new JCheckBox("ÎÄ¼ş");
+//		SearchType = new JLabel("æœç´¢ç±»å‹");		
+//		FileCheck = new JCheckBox("æ–‡ä»¶");
 //		FileCheck.setSelected(true);
-//		DirCheck = new JCheckBox("Ä¿Â¼");
+//		DirCheck = new JCheckBox("ç›®å½•");
 //		DirCheck.setSelected(true);
 //		FileCheck.addActionListener(this);
 //		DirCheck.addActionListener(this);
@@ -182,7 +182,7 @@ public class MainForm extends JFrame implements ActionListener{
 //		p.add(FileCheck);
 //		p.add(DirCheck);
 	   
-		 //ÖĞÉÏµ¼º½À¸35
+		 //ä¸­ä¸Šå¯¼èˆªæ 35
         FunctPanel = new JPanel();
         FunctPanel.setBounds(30, 10, 1200, 45);
         FunctPanel.setLayout(null);
@@ -207,7 +207,7 @@ public class MainForm extends JFrame implements ActionListener{
         FunctPanel.add(GoBtn);
         getContentPane().add(FunctPanel);
         
-		//ÖĞ²¿ÎÄ¼şÁĞ±í
+		//ä¸­éƒ¨æ–‡ä»¶åˆ—è¡¨
         stack = new Stack<String>();
         stack_return = new Stack<String>();
         ShowPanel.setSize(300, 460);
@@ -215,19 +215,19 @@ public class MainForm extends JFrame implements ActionListener{
         
         ShowPanel.setLayout(null);    
         list = new JList<String>();
-        jPopupMenu = new JPopupMenu();//ÎÄ¼ş/ÎÄ¼ş¼ĞµÄÊôĞÔ²Ëµ¥
-        jPopupMenu2 = new JPopupMenu();//´ÅÅÌµÄÊôĞÔ²Ëµ¥
-        JMIs[0] = new JMenuItem("´ò¿ª");
-        JMIs[1] = new JMenuItem("É¾³ı");
-        JMIs[2] = new JMenuItem("ÖØÃüÃû");
-        JMIs[3] = new JMenuItem("ÊôĞÔ");
-        for(int k = 0; k < 4; ++k){//ÎÄ¼ş/ÎÄ¼ş¼ĞµÄÊôĞÔ²Ëµ¥³õÊ¼»¯
+        jPopupMenu = new JPopupMenu();//æ–‡ä»¶/æ–‡ä»¶å¤¹çš„å±æ€§èœå•
+        jPopupMenu2 = new JPopupMenu();//ç£ç›˜çš„å±æ€§èœå•
+        JMIs[0] = new JMenuItem("æ‰“å¼€");
+        JMIs[1] = new JMenuItem("åˆ é™¤");
+        JMIs[2] = new JMenuItem("é‡å‘½å");
+        JMIs[3] = new JMenuItem("å±æ€§");
+        for(int k = 0; k < 4; ++k){//æ–‡ä»¶/æ–‡ä»¶å¤¹çš„å±æ€§èœå•åˆå§‹åŒ–
         	JMIs[k].addActionListener(this);
         	jPopupMenu.add(JMIs[k]);            	
         }        
-        JMIs2[0] = new JMenuItem("´ò¿ª");
-        JMIs2[1] = new JMenuItem("ÊôĞÔ");
-        for(int k = 0; k < 2; ++k){//´ÅÅÌµÄÊôĞÔ²Ëµ¥³õÊ¼»¯
+        JMIs2[0] = new JMenuItem("æ‰“å¼€");
+        JMIs2[1] = new JMenuItem("å±æ€§");
+        for(int k = 0; k < 2; ++k){//ç£ç›˜çš„å±æ€§èœå•åˆå§‹åŒ–
         	JMIs2[k].addActionListener(this);
         	jPopupMenu2.add(JMIs2[k]);            	
         }    
@@ -238,26 +238,25 @@ public class MainForm extends JFrame implements ActionListener{
         list.add(jPopupMenu2);
         list.add(jPopupMenu);
         
-        Home_List();//ÏÔÊ¾´ÅÅÌ¸ùÄ¿Â¼
+        Home_List();//æ˜¾ç¤ºç£ç›˜æ ¹ç›®å½•
 		list.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e){
 				if(list.getSelectedIndex() != -1){
-					if(e.getClickCount() == 1){//µ¥»÷listÊ±£¬ÔİÎŞÊÂ¼ş
+					if(e.getClickCount() == 1){//å•å‡»listæ—¶ï¼Œæš‚æ— äº‹ä»¶
 					
-					}else if(e.getClickCount() == 2){//Ë«»÷listÊ±£¬´ò¿ªÎÄ¼ş»ò½øÈë¸Ã×ÓÄ¿Â¼
-						System.out.println(list.getSelectedValue());
+					}else if(e.getClickCount() == 2){//åŒå‡»listæ—¶ï¼Œæ‰“å¼€æ–‡ä»¶æˆ–è¿›å…¥è¯¥å­ç›®å½•
 						twoClick(list.getSelectedValue());												
 					}
-					if(e.getButton() == 3){//ÓÒ»÷listÊ±£¬´ò¿ª²Ëµ¥À¸
+					if(e.getButton() == 3){//å³å‡»listæ—¶ï¼Œæ‰“å¼€èœå•æ 
 						if(Cur_URL != ""){
 							if(list.getSelectedValuesList().size() == 1){
-								jPopupMenu.show(list,e.getX(),e.getY()); //Èç¹ûÓÒ»÷µÄÊÇµ¥¸öÎÄ¼ş¼ĞºÍÎÄ¼ş£¬ÔòÓ¦´ò¿ªÒ»¸ö¹¦ÄÜÆëÈ«µÄ²Ëµ¥À¸
-							}else if(list.getSelectedValuesList().size() > 1){//Èç¹ûÑ¡ÖĞ¶à¸öÎÄ¼ş¼ĞºÍÎÄ¼ş£¬ÔòÖ»Ö§³ÖÉ¾³ı¹¦ÄÜ
+								jPopupMenu.show(list,e.getX(),e.getY()); //å¦‚æœå³å‡»çš„æ˜¯å•ä¸ªæ–‡ä»¶å¤¹å’Œæ–‡ä»¶ï¼Œåˆ™åº”æ‰“å¼€ä¸€ä¸ªåŠŸèƒ½é½å…¨çš„èœå•æ 
+							}else if(list.getSelectedValuesList().size() > 1){//å¦‚æœé€‰ä¸­å¤šä¸ªæ–‡ä»¶å¤¹å’Œæ–‡ä»¶ï¼Œåˆ™åªæ”¯æŒåˆ é™¤åŠŸèƒ½
 								jPopupMenu3.show(list, e.getX(), e.getY());
 							}
 						}		                 
 						else if(Cur_URL == "" && list.getSelectedValuesList().size() == 1){
-							jPopupMenu2.show(list, e.getX(), e.getY()); //Èç¹ûÓÒ»÷µÄÊÇ´ÅÅÌ£¬²Ëµ¥À¸ÖĞÖ»º¬ÓĞ¡°´ò¿ª¡±ºÍ¡°ÊôĞÔ¡±¹¦ÄÜ
+							jPopupMenu2.show(list, e.getX(), e.getY()); //å¦‚æœå³å‡»çš„æ˜¯ç£ç›˜ï¼Œèœå•æ ä¸­åªå«æœ‰â€œæ‰“å¼€â€å’Œâ€œå±æ€§â€åŠŸèƒ½
 						}						
 					}
 				}
@@ -269,7 +268,7 @@ public class MainForm extends JFrame implements ActionListener{
 		ScrollShow.setLocation(5, 5);
 		getContentPane().add(ShowPanel);
 		
-		//×ó²àÄ¿Â¼Ê÷×´Í¼
+		//å·¦ä¾§ç›®å½•æ ‘çŠ¶å›¾
 //        TreePanel.setSize(190,610);
 //        TreePanel.setLocation(5, 90);
 //       TreePanel.setLayout(null); 
@@ -280,28 +279,30 @@ public class MainForm extends JFrame implements ActionListener{
 //        this.add(TreePanel);                   
         getContentPane().add(p);	
               
-        // ´´½¨Ñ¡Ïî¿¨Ãæ°å
+        // åˆ›å»ºé€‰é¡¹å¡é¢æ¿
         final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         tabbedPane.setBounds(350, 90, 800, 490);
         
-        // ´´½¨µÚ 1 ¸öÑ¡Ïî¿¨£¨Ñ¡Ïî¿¨Ö»°üº¬ ±êÌâ£©
+        // åˆ›å»ºç¬¬ 1 ä¸ªé€‰é¡¹å¡ï¼ˆé€‰é¡¹å¡åªåŒ…å« æ ‡é¢˜ï¼‰
         
         JPanel Rename = new JPanel(null);
         Rename.setBounds(10, 10, 600, 400);
-        JLabel RenameType = new JLabel("Ìí¼Ó·½Ê½:");
+        JLabel RenameType = new JLabel("æ·»åŠ æ–¹å¼:");
         RenameType.setBounds(10, 10, 100, 50);
-        JLabel RenameValue = new JLabel("Ìí¼ÓÖµ:");
+        JLabel RenameValue = new JLabel("æ·»åŠ å€¼:");
         RenameValue.setBounds(20, 70, 100, 50);
-        JRadioButton BtnQian = new JRadioButton("Ç°×º");
+        BtnQian = new JRadioButton("å‰ç¼€");
         BtnQian.setBounds(80, 10, 50, 50);
-        JRadioButton BtnHou = new JRadioButton("ºó×º");
+        BtnQian.setSelected(true);
+        JRadioButton BtnHou = new JRadioButton("åç¼€");
         BtnHou.setBounds(150, 10, 50, 50);
         ButtonGroup RenameClass = new ButtonGroup();
         RenameClass.add(BtnQian);
         RenameClass.add(BtnHou);
-        JTextField Revalue = new JTextField();
-        JButton SetName = new JButton("ÖØÃüÃû");
+        Revalue = new JTextField();
+        SetName = new JButton("é‡å‘½å");
         Revalue.setBounds(80, 80, 200, 30);
+        SetName.addActionListener(this);
         SetName.setBounds(80,160,100,30);
         Rename.add(RenameValue);
         Rename.add(RenameType);
@@ -310,22 +311,22 @@ public class MainForm extends JFrame implements ActionListener{
         Rename.add(Revalue);
         Rename.add(SetName);
         
-        tabbedPane.addTab("ÖØÃüÃû",Rename);
+        tabbedPane.addTab("é‡å‘½å",Rename);
        
-        // ´´½¨µÚ 2 ¸öÑ¡Ïî¿¨£¨Ñ¡Ïî¿¨°üº¬ ±êÌâ ºÍ Í¼±ê£©
+        // åˆ›å»ºç¬¬ 2 ä¸ªé€‰é¡¹å¡ï¼ˆé€‰é¡¹å¡åŒ…å« æ ‡é¢˜ å’Œ å›¾æ ‡ï¼‰
         JPanel Classify = new JPanel(null);
         Classify.setBounds(10,10,600,400);
-        JLabel ClassTypeName = new JLabel("·ÖÀà·½Ê½:");
+        JLabel ClassTypeName = new JLabel("åˆ†ç±»æ–¹å¼:");
         ClassTypeName.setBounds(10,10,90,30);
-        JLabel ClassPosition = new JLabel("Ä¿µÄµØÖ·:");
+        JLabel ClassPosition = new JLabel("ç›®çš„åœ°å€:");
         ClassPosition.setBounds(10,60,90,30);
         PositionUrl = new JTextField();
         PositionUrl.setBounds(80,61,270,30);
-        SearchDir = new JButton("ä¯ÀÀ");
+        SearchDir = new JButton("æµè§ˆ");
         SearchDir.setBounds(360,60,60,30);
-		JCheckBox ClassiFyType1 = new JCheckBox("ÎÄ¼şÃû");
-		JCheckBox ClassiFyType2 = new JCheckBox("ÎÄ¼şÀàĞÍ");
-		JCheckBox ClassiFyType3 = new JCheckBox("Ê±¼ä");
+		JCheckBox ClassiFyType1 = new JCheckBox("æ–‡ä»¶å");
+		JCheckBox ClassiFyType2 = new JCheckBox("æ–‡ä»¶ç±»å‹");
+		JCheckBox ClassiFyType3 = new JCheckBox("æ—¶é—´");
 		ClassiFyType1.setBounds(80,10,70,30);
 		ClassiFyType2.setBounds(160,10,90,30);
 		ClassiFyType3.setBounds(252,10,90,30);
@@ -337,28 +338,27 @@ public class MainForm extends JFrame implements ActionListener{
 		Classify.add(SearchDir);
 		Classify.add(PositionUrl);
 		SearchDir.addActionListener(this);
-		tabbedPane.addTab("·ÖÀà",Classify);
+		tabbedPane.addTab("åˆ†ç±»",Classify);
 		
-		JButton button = new JButton("·ÖÀà");
+		JButton button = new JButton("åˆ†ç±»");
 		button.setBounds(80, 120, 93, 23);
 		Classify.add(button);
-        // ´´½¨µÚ 3 ¸öÑ¡Ïî¿¨£¨Ñ¡Ïî¿¨°üº¬ ±êÌâ¡¢Í¼±ê ºÍ tipÌáÊ¾£©
+        // åˆ›å»ºç¬¬ 3 ä¸ªé€‰é¡¹å¡ï¼ˆé€‰é¡¹å¡åŒ…å« æ ‡é¢˜ã€å›¾æ ‡ å’Œ tipæç¤ºï¼‰
         //tabbedPane.addTab("Tab03",); 
         
         getContentPane().add(tabbedPane);
         
         panel = new JPanel();
-        tabbedPane.addTab("ÍÆ¼ö²Ù×÷", null, panel, null);
+        tabbedPane.addTab("æ¨èæ“ä½œ", null, panel, null);
 	}
 	
-	private void oneClick(String choice){//µã»÷Ò»´ÎµÄ·½·¨
+	private void oneClick(String choice){//ç‚¹å‡»ä¸€æ¬¡çš„æ–¹æ³•
 		
 	}
 	
-	public void twoClick(String choice){//µã»÷Á½´ÎÊ±µÄÊÂ¼ş
-		if(!isSearching){//Èç¹û´ËÊ±²»ÔÚËÑË÷×´Ì¬£¬¾ÍÊÇÕı³£µÄµã»÷´¦Àí
+	public void twoClick(String choice){//ç‚¹å‡»ä¸¤æ¬¡æ—¶çš„äº‹ä»¶
+		if(!isSearching){//å¦‚æœæ­¤æ—¶ä¸åœ¨æœç´¢çŠ¶æ€ï¼Œå°±æ˜¯æ­£å¸¸çš„ç‚¹å‡»å¤„ç†
 			choice += "\\";	
-			System.out.printf("chouic:"+choice);
 			File file = new File(Cur_URL + choice);
 			if(file.isDirectory()){
 				Cur_URL += choice;	
@@ -367,19 +367,19 @@ public class MainForm extends JFrame implements ActionListener{
 			}else{
 				OpenIt(file);
 			}
-		}else{//Èç¹ûÊÇÔÚËÑË÷×´Ì¬£¬ÄÇ¾ÍÒª´ÓmapÀïÌáÈ¡ÎÒÃÇµÄURL£¬ÒòÎªËÑË÷°ÑË³Ğò¶¼´òÂÒÁË£¬ÎŞ·¨ÓÃÒ»¸öURL¶ÔÓ¦
+		}else{//å¦‚æœæ˜¯åœ¨æœç´¢çŠ¶æ€ï¼Œé‚£å°±è¦ä»mapé‡Œæå–æˆ‘ä»¬çš„URLï¼Œå› ä¸ºæœç´¢æŠŠé¡ºåºéƒ½æ‰“ä¹±äº†ï¼Œæ— æ³•ç”¨ä¸€ä¸ªURLå¯¹åº”
 			File file = new File(Maps.get(choice));
 			OpenIt(file);
 		}
 	}
 	
-	public void Home_List(){//»Øµ½³õÊ¼´ÅÅÌ½çÃæ
+	public void Home_List(){//å›åˆ°åˆå§‹ç£ç›˜ç•Œé¢
 		List<String> Disks = MemoryInfo.getDisk();
 		defaultListModel = new DefaultListModel();
 		for(int i = 0; i < Disks.size(); ++i){
 			defaultListModel.addElement(Disks.get(i));
 		}
-		Icon[] icons = GetFileIcon.getSmallIcon("HOME");//µÃµ½¸ùÄ¿Â¼ÏÂµÄÍ¼±ê
+		Icon[] icons = GetFileIcon.getSmallIcon("HOME");//å¾—åˆ°æ ¹ç›®å½•ä¸‹çš„å›¾æ ‡
 		list.setModel(defaultListModel);
 		list.setCellRenderer(new MyCellRenderer(icons));
 		GuideText.setText("");
@@ -387,7 +387,7 @@ public class MainForm extends JFrame implements ActionListener{
 		stack.push(Cur_URL);
 	}
 	
-	public void OpenIt(File file){//µ÷ÓÃµçÄÔÖĞµÄ³ÌĞò¡°´ò¿ª¡±ÎÄ¼şµÄ·½·¨
+	public void OpenIt(File file){//è°ƒç”¨ç”µè„‘ä¸­çš„ç¨‹åºâ€œæ‰“å¼€â€æ–‡ä»¶çš„æ–¹æ³•
 		try {
 			Desktop.getDesktop().open(file);
 		} catch (IOException e1) {
@@ -396,10 +396,10 @@ public class MainForm extends JFrame implements ActionListener{
 		}
 	}
 	
-	public void Go_There(){//ÏëÈ¥ÄÄ£¬¾ÍÈ¥ÄÄ£¨ºËĞÄÌø×ªº¯Êı£©
+	public void Go_There(){//æƒ³å»å“ªï¼Œå°±å»å“ªï¼ˆæ ¸å¿ƒè·³è½¬å‡½æ•°ï¼‰
 			GuideText.setText(Cur_URL);
 			PositionUrl.setText(Cur_URL);
-			if(Cur_URL != ""){//Cur_URL·Ç¿Õ£¬¾ÍÌøÈëÄ¿±êÄ¿Â¼
+			if(Cur_URL != ""){//Cur_URLéç©ºï¼Œå°±è·³å…¥ç›®æ ‡ç›®å½•
 				defaultListModel.clear();
 				String[] getString = GetFileNames.getFileName(Cur_URL);		
 				for(int i = 0; i < getString.length; ++i){
@@ -409,35 +409,35 @@ public class MainForm extends JFrame implements ActionListener{
 				list.setModel(defaultListModel);
 				list.setCellRenderer(new MyCellRenderer(icons));
 				
-			}else{//Cur_URLÎª¿ÕÊ±£¬¾ÍÌø×ª»Ø¸ùÄ¿Â¼
+			}else{//Cur_URLä¸ºç©ºæ—¶ï¼Œå°±è·³è½¬å›æ ¹ç›®å½•
 				Home_List();
 			}
 	}
 	
-	public void GetAllResults(String path){//ËÑË÷¹¦ÄÜºËĞÄº¯Êı
+	public void GetAllResults(String path){//æœç´¢åŠŸèƒ½æ ¸å¿ƒå‡½æ•°
 		  if(path != ""){		    	
 				String[] getString = GetFileNames.getFileName(path);
 				for(int i = 0; i < getString.length; ++i){
 					File file = new File(path + getString[i] + "\\");						
-					if(file.isDirectory()){//±éÀú×ÓÎÄ¼ş¼ĞÏÂ						
+					if(file.isDirectory()){//éå†å­æ–‡ä»¶å¤¹ä¸‹						
 						GetAllResults(path + getString[i] + "\\");
 					}else{
 						String prefix = getString[i].substring(getString[i].lastIndexOf('.') + 1);					
-						if(VideoType.contains(prefix) && Videos.isSelected()){//ÅĞ¶ÏÊÇ·ñÎªÊÓÆµÎÄ¼şÇÒÊÓÆµ°´Å¥±»Ñ¡ÖĞ£¬ÊÇÔò¼ÓÈëÎÒÃÇµÄÏÔÊ¾Ä¿Â¼Àï
+						if(VideoType.contains(prefix) && Videos.isSelected()){//åˆ¤æ–­æ˜¯å¦ä¸ºè§†é¢‘æ–‡ä»¶ä¸”è§†é¢‘æŒ‰é’®è¢«é€‰ä¸­ï¼Œæ˜¯åˆ™åŠ å…¥æˆ‘ä»¬çš„æ˜¾ç¤ºç›®å½•é‡Œ
 							System.out.println(getString[i]);
-							Maps.put(getString[i], path + getString[i]);//ÓÃMaps´æ´¢ÎÄ¼şÃûÓëÂ·¾¶µÄ¶ÔÓ¦¹ØÏµ
+							Maps.put(getString[i], path + getString[i]);//ç”¨Mapså­˜å‚¨æ–‡ä»¶åä¸è·¯å¾„çš„å¯¹åº”å…³ç³»
 							defaultListModel.addElement(getString[i]);
 							AllIcons[Icon_Counter++] = GetFileIcon.getSingleSmallIcon(path + getString[i]);
-						}else if(GraphType.contains(prefix) && Picture.isSelected()){//ÅĞ¶ÏÊÇ·ñÎªÍ¼Æ¬ÎÄ¼şÇÒÍ¼Æ¬°´Å¥±»Ñ¡ÖĞ£¬ÊÇÔò¼ÓÈëÎÒÃÇµÄÏÔÊ¾Ä¿Â¼Àï
-							Maps.put(getString[i], path + getString[i]);//ÓÃMaps´æ´¢ÎÄ¼şÃûÓëÂ·¾¶µÄ¶ÔÓ¦¹ØÏµ
+						}else if(GraphType.contains(prefix) && Picture.isSelected()){//åˆ¤æ–­æ˜¯å¦ä¸ºå›¾ç‰‡æ–‡ä»¶ä¸”å›¾ç‰‡æŒ‰é’®è¢«é€‰ä¸­ï¼Œæ˜¯åˆ™åŠ å…¥æˆ‘ä»¬çš„æ˜¾ç¤ºç›®å½•é‡Œ
+							Maps.put(getString[i], path + getString[i]);//ç”¨Mapså­˜å‚¨æ–‡ä»¶åä¸è·¯å¾„çš„å¯¹åº”å…³ç³»
 							defaultListModel.addElement(getString[i]);
 							AllIcons[Icon_Counter++] = GetFileIcon.getSingleSmallIcon(path + getString[i]);
-						}else if(TxtType.contains(prefix) && Text.isSelected()){//ÅĞ¶ÏÊÇ·ñÎªÎÄµµÎÄ¼şÇÒÎÄµµ°´Å¥±»Ñ¡ÖĞ£¬ÊÇÔò¼ÓÈëÎÒÃÇµÄÏÔÊ¾Ä¿Â¼Àï
-							Maps.put(getString[i], path + getString[i]);//ÓÃMaps´æ´¢ÎÄ¼şÃûÓëÂ·¾¶µÄ¶ÔÓ¦¹ØÏµ
+						}else if(TxtType.contains(prefix) && Text.isSelected()){//åˆ¤æ–­æ˜¯å¦ä¸ºæ–‡æ¡£æ–‡ä»¶ä¸”æ–‡æ¡£æŒ‰é’®è¢«é€‰ä¸­ï¼Œæ˜¯åˆ™åŠ å…¥æˆ‘ä»¬çš„æ˜¾ç¤ºç›®å½•é‡Œ
+							Maps.put(getString[i], path + getString[i]);//ç”¨Mapså­˜å‚¨æ–‡ä»¶åä¸è·¯å¾„çš„å¯¹åº”å…³ç³»
 							defaultListModel.addElement(getString[i]);
 							AllIcons[Icon_Counter++] = GetFileIcon.getSingleSmallIcon(path + getString[i]);
 						}else if(MusicType.contains(prefix) && Music.isSelected()){
-							Maps.put(getString[i], path + getString[i]);//ÓÃMaps´æ´¢ÎÄ¼şÃûÓëÂ·¾¶µÄ¶ÔÓ¦¹ØÏµ
+							Maps.put(getString[i], path + getString[i]);//ç”¨Mapså­˜å‚¨æ–‡ä»¶åä¸è·¯å¾„çš„å¯¹åº”å…³ç³»
 							defaultListModel.addElement(getString[i]);
 							AllIcons[Icon_Counter++] = GetFileIcon.getSingleSmallIcon(path + getString[i]);
 						}
@@ -454,39 +454,39 @@ public class MainForm extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getSource() == PreBtn){//Ïò×ó×ß
+		if(e.getSource() == PreBtn){//å‘å·¦èµ°
 			LatURL = Cur_URL;			
 			if(!stack.isEmpty()){
-				stack.pop();//Ã¿´Óµ±Ç°Ò»¸öÄ¿Â¼Ìø»ØÖ®Ç°µÄÄ¿Â¼Ê±£¬stack¾ÍÒª³öÕ»		
-				stack_return.push(Cur_URL);//°ÑÌøÖ®Ç°µÄÄ¿Â¼·ÅÈë·µ»ØÕ»stack_return
+				stack.pop();//æ¯ä»å½“å‰ä¸€ä¸ªç›®å½•è·³å›ä¹‹å‰çš„ç›®å½•æ—¶ï¼Œstackå°±è¦å‡ºæ ˆ		
+				stack_return.push(Cur_URL);//æŠŠè·³ä¹‹å‰çš„ç›®å½•æ”¾å…¥è¿”å›æ ˆstack_return
 				if(!stack.isEmpty()){					
-					Cur_URL = stack.peek();//´ÓÕ»ÖĞµÃµ½ÉÏÒ»¸ö·ÃÎÊµÄÄ¿Â¼£¬¸³¸øµ±Ç°Ä¿Â¼					
+					Cur_URL = stack.peek();//ä»æ ˆä¸­å¾—åˆ°ä¸Šä¸€ä¸ªè®¿é—®çš„ç›®å½•ï¼Œèµ‹ç»™å½“å‰ç›®å½•					
 				}
 				else{
-					Cur_URL = "";//Èç¹ûÕ»Îª¿Õ£¬ÔòËµÃ÷Ç°ÃæÊÇ¸ùÄ¿Â¼£¬ÔòÖ±½ÓÖÃ¿Õ
+					Cur_URL = "";//å¦‚æœæ ˆä¸ºç©ºï¼Œåˆ™è¯´æ˜å‰é¢æ˜¯æ ¹ç›®å½•ï¼Œåˆ™ç›´æ¥ç½®ç©º
 				}
 				Go_There();
 			}
-			if(isSearching){//Èç¹ûÕıÔÚËÑË÷×´Ì¬£¬ÄÇ´ËÊ±Ó¦¸Ã½áÊø
+			if(isSearching){//å¦‚æœæ­£åœ¨æœç´¢çŠ¶æ€ï¼Œé‚£æ­¤æ—¶åº”è¯¥ç»“æŸ
 				isSearching = false;
 				AllFiles.setSelected(true);
 			}
 		}
 		
-		else if(e.getSource() == LatBtn){//ÏòÓÒ×ß
-			if(!stack_return.isEmpty()){//ÏòÓÒ×ß£¬Ôò´Ó·µ»ØÕ»ÀïÄÃURL
+		else if(e.getSource() == LatBtn){//å‘å³èµ°
+			if(!stack_return.isEmpty()){//å‘å³èµ°ï¼Œåˆ™ä»è¿”å›æ ˆé‡Œæ‹¿URL
 				Cur_URL = stack_return.peek();
 				stack_return.pop();
 				stack.push(Cur_URL);
 				Go_There();
 			}
-			if(isSearching){//Èç¹ûÕıÔÚËÑË÷×´Ì¬£¬ÄÇ´ËÊ±Ó¦¸Ã½áÊø
+			if(isSearching){//å¦‚æœæ­£åœ¨æœç´¢çŠ¶æ€ï¼Œé‚£æ­¤æ—¶åº”è¯¥ç»“æŸ
 				isSearching = false;
 				AllFiles.setSelected(true);
 			}
 		}
 		
-		else if(e.getSource() == JMIs[0] || e.getSource() == JMIs2[0]){	//´ò¿ªÎÄ¼ş/ÎÄ¼ş¼Ğ/´ÅÅÌ
+		else if(e.getSource() == JMIs[0] || e.getSource() == JMIs2[0]){	//æ‰“å¼€æ–‡ä»¶/æ–‡ä»¶å¤¹/ç£ç›˜
 			if(!isSearching){
 				String url = Cur_URL + list.getSelectedValue();
 			if(Cur_URL != ""){
@@ -504,13 +504,13 @@ public class MainForm extends JFrame implements ActionListener{
 			}			
 		}
 		
-		else if(e.getSource() == JMIs[1]){//É¾³ı
+		else if(e.getSource() == JMIs[1]){//åˆ é™¤
 			File file = new File(Cur_URL + "/" + list.getSelectedValue());
 			int n;
 			if(file.isFile()){
-				n = JOptionPane.showConfirmDialog(null, "È·¶¨ÒªÉ¾³ıÎÄ¼ş " + file.getName() + " Ã´?", "ÎÄ¼şÉ¾³ı",JOptionPane.YES_NO_OPTION);
+				n = JOptionPane.showConfirmDialog(null, "ç¡®å®šè¦åˆ é™¤æ–‡ä»¶ " + file.getName() + " ä¹ˆ?", "æ–‡ä»¶åˆ é™¤",JOptionPane.YES_NO_OPTION);
 			}else{
-				n = JOptionPane.showConfirmDialog(null, "È·¶¨ÒªÉ¾³ı " + file.getName() + " ¼°ÆäÄ¿Â¼ÏÂµÄÎÄ¼şÃ´?", "ÎÄ¼ş¼ĞÉ¾³ı",JOptionPane.YES_NO_OPTION);
+				n = JOptionPane.showConfirmDialog(null, "ç¡®å®šè¦åˆ é™¤ " + file.getName() + " åŠå…¶ç›®å½•ä¸‹çš„æ–‡ä»¶ä¹ˆ?", "æ–‡ä»¶å¤¹åˆ é™¤",JOptionPane.YES_NO_OPTION);
 			}
 			if(n == 0){
 				FileDelete.delete(Cur_URL + list.getSelectedValue() +  "\\");
@@ -518,18 +518,18 @@ public class MainForm extends JFrame implements ActionListener{
 			}			
 		}
 		
-		else if(e.getSource() == delete){//¶àÑ¡ÏÂµÄÉ¾³ı
+		else if(e.getSource() == delete){//å¤šé€‰ä¸‹çš„åˆ é™¤
 			List<String> selected_str = list.getSelectedValuesList();
 			File file;
 			int num = selected_str.size();
-			int n = JOptionPane.showConfirmDialog(null, "È·¶¨ÒªÉ¾³ı " + selected_str.get(0) + " µÈ" + num + "ÏîÃ´?", "ÎÄ¼şÉ¾³ı",JOptionPane.YES_NO_OPTION);
+			int n = JOptionPane.showConfirmDialog(null, "ç¡®å®šè¦åˆ é™¤ " + selected_str.get(0) + " ç­‰" + num + "é¡¹ä¹ˆ?", "æ–‡ä»¶åˆ é™¤",JOptionPane.YES_NO_OPTION);
 			if(n == 0){
-				if(isSearching){//Èç¹ûÊÇÕıÔÚËÑË÷£¬´ÓMapsÈ¡URL
+				if(isSearching){//å¦‚æœæ˜¯æ­£åœ¨æœç´¢ï¼Œä»Mapså–URL
 					for(int i = 0; i < selected_str.size(); ++i){
 						file = new File(Maps.get(selected_str.get(i)));
 						FileDelete.delete(file.getAbsolutePath());
 					}				
-				}else{//·ñÔò¾ÍÓÃCur_URLÆ´½Ó»ñµÃ
+				}else{//å¦åˆ™å°±ç”¨Cur_URLæ‹¼æ¥è·å¾—
 					for(int i = 0; i < selected_str.size(); ++i){
 						FileDelete.delete(Cur_URL + selected_str.get(i) +  "\\");
 					}		
@@ -538,15 +538,15 @@ public class MainForm extends JFrame implements ActionListener{
 			}						
 		}
 		
-		else if(e.getSource() == JMIs[2]){//ÖØÃüÃû
+		else if(e.getSource() == JMIs[2]){//é‡å‘½å
 			String before = list.getSelectedValue();
 			File file = new File(Cur_URL + before + "\\");
 			String after = "";
 			if(file.isDirectory()){
-				after = (String) JOptionPane.showInputDialog(null, "ÇëÊäÈëĞÂÎÄ¼ş¼ĞÃû:\n", "ÖØÃüÃû", JOptionPane.PLAIN_MESSAGE, null, null,
+				after = (String) JOptionPane.showInputDialog(null, "è¯·è¾“å…¥æ–°æ–‡ä»¶å¤¹å:\n", "é‡å‘½å", JOptionPane.PLAIN_MESSAGE, null, null,
 		                list.getSelectedValue());
 			}else{
-				after = (String) JOptionPane.showInputDialog(null, "ÇëÊäÈëĞÂÎÄ¼şÃû:\n", "ÖØÃüÃû", JOptionPane.PLAIN_MESSAGE, null, null,
+				after = (String) JOptionPane.showInputDialog(null, "è¯·è¾“å…¥æ–°æ–‡ä»¶å:\n", "é‡å‘½å", JOptionPane.PLAIN_MESSAGE, null, null,
 		                list.getSelectedValue());
 			}			
 			if(before != after && after != null){
@@ -557,7 +557,7 @@ public class MainForm extends JFrame implements ActionListener{
 			}
 		}
 		
-		else if(e.getSource() == JMIs[3]){//´ò¿ªÎÄ¼ş/ÎÄ¼ş¼ĞÊôĞÔ´°¿Ú
+		else if(e.getSource() == JMIs[3]){//æ‰“å¼€æ–‡ä»¶/æ–‡ä»¶å¤¹å±æ€§çª—å£
 			String temp_url = Cur_URL + list.getSelectedValue() + "\\";
 			File file = new File(temp_url);
 			Icon icon = GetFileIcon.getSingleSmallIcon(temp_url);			
@@ -572,13 +572,13 @@ public class MainForm extends JFrame implements ActionListener{
 			String Modify_Time = FileTime.getModifiedTime(temp_url);
 			String Last_Access = FileTime.getLatestAccessTime(temp_url);
 			
-			if(file.isDirectory()){//Ä¿Â¼ÊôĞÔ³õÊ¼»¯ËùĞè²ÎÊı
+			if(file.isDirectory()){//ç›®å½•å±æ€§åˆå§‹åŒ–æ‰€éœ€å‚æ•°
 				DirectoryInfo DInfo = new DirectoryInfo();
 				size = DInfo._instance.getDirSize(file);
 				File_Num = DInfo.File_Num;
 				Directory_Num = DInfo.Directory_Num;
 				flag = 1;
-			}else{//ÎÄ¼şÊôĞÔ³õÊ¼»¯ËùĞè²ÎÊı
+			}else{//æ–‡ä»¶å±æ€§åˆå§‹åŒ–æ‰€éœ€å‚æ•°
 				size = file.length();				
 			}			 
 			final_size = 0;				
@@ -597,7 +597,7 @@ public class MainForm extends JFrame implements ActionListener{
 			}		
 		}
 		
-		else if(e.getSource() == JMIs2[1]){//´ÅÅÌÊôĞÔ²é¿´
+		else if(e.getSource() == JMIs2[1]){//ç£ç›˜å±æ€§æŸ¥çœ‹
 			String temp_url = list.getSelectedValue() + "\\";
 			Icon icon = GetFileIcon.getSingleSmallIcon(temp_url);	
 			File file = new File(temp_url);			
@@ -608,7 +608,7 @@ public class MainForm extends JFrame implements ActionListener{
 			FileProperties properties = new FileProperties(icon, name, Used, Available);
 		}
 		
-		else if(e.getSource() == GoBtn || e.getSource() == GuideText){//Í¨¹ıµØÖ·À¸½øĞĞÎÄ¼şµØÖ·Ìø×ª
+		else if(e.getSource() == GoBtn || e.getSource() == GuideText){//é€šè¿‡åœ°å€æ è¿›è¡Œæ–‡ä»¶åœ°å€è·³è½¬
 			String url = GuideText.getText();
 			if(url.length() > 0){
 			File file = new File(url);
@@ -617,19 +617,19 @@ public class MainForm extends JFrame implements ActionListener{
 				Cur_URL = url;
 				Go_There();
 			}else{
-				JOptionPane.showConfirmDialog(null, "Ã»ÓĞÕÒµ½¸ÃÄ¿Â¼", "È·ÈÏ¶Ô»°¿ò", JOptionPane.YES_OPTION);
+				JOptionPane.showConfirmDialog(null, "æ²¡æœ‰æ‰¾åˆ°è¯¥ç›®å½•", "ç¡®è®¤å¯¹è¯æ¡†", JOptionPane.YES_OPTION);
 			}
 			}else{
 				Home_List();
 			}
 		}
 		
-		else if(e.getSource() == AllFiles){//Èç¹ûÊÇËÑË÷ÍêÇĞ»»»ØÏÔÊ¾ËùÓĞÎÄ¼ş£¬Ôò»Øµ½Ö÷Ä¿Â¼
+		else if(e.getSource() == AllFiles){//å¦‚æœæ˜¯æœç´¢å®Œåˆ‡æ¢å›æ˜¾ç¤ºæ‰€æœ‰æ–‡ä»¶ï¼Œåˆ™å›åˆ°ä¸»ç›®å½•
 			isSearching = false;		
 			Home_List();
 		}
 		
-		else if(e.getSource() == Videos || e.getSource() == Picture || e.getSource() == Text || e.getSource() == Music){//Èç¹ûÑ¡ÔñÁËËÑË÷¹¦ÄÜ
+		else if(e.getSource() == Videos || e.getSource() == Picture || e.getSource() == Text || e.getSource() == Music){//å¦‚æœé€‰æ‹©äº†æœç´¢åŠŸèƒ½
 			 isSearching = true;
 			 Maps.clear();
 			 isSearching = true;
@@ -641,17 +641,17 @@ public class MainForm extends JFrame implements ActionListener{
 			 list.setCellRenderer(new MyCellRenderer(AllIcons));
 		}	
 		
-		else if(e.getSource() == SearchText){//ËÑË÷¿òÊäÈëºó°´»Ø³µ¼ü´¥·¢¸ÃÊÂ¼ş
+		else if(e.getSource() == SearchText){//æœç´¢æ¡†è¾“å…¥åæŒ‰å›è½¦é”®è§¦å‘è¯¥äº‹ä»¶
 			 boolean flag_Dir = false, flag_File = false;
-			 if(FileCheck.isSelected()){//ËÑË÷ÎÄ¼şÃû
+			 if(FileCheck.isSelected()){//æœç´¢æ–‡ä»¶å
 				 flag_File = true;
 			 }
-			 if(DirCheck.isSelected()){//ËÑË÷ÎÄ¼ş¼ĞÃû
+			 if(DirCheck.isSelected()){//æœç´¢æ–‡ä»¶å¤¹å
 				 flag_Dir = true;
 			 }
-			 if(!(flag_File || flag_Dir)){//Á½¸ö¶¼²»Ñ¡ÊÇ²»ĞĞµÄ
-				 JOptionPane.showMessageDialog(null, "ÇëÖÁÉÙÑ¡ÔñÒ»¸öËÑË÷Àà±ğ", "È·ÈÏ¶Ô»°¿ò", JOptionPane.YES_OPTION);
-			 }else{//¿ªÊ¼ËÑË÷
+			 if(!(flag_File || flag_Dir)){//ä¸¤ä¸ªéƒ½ä¸é€‰æ˜¯ä¸è¡Œçš„
+				 JOptionPane.showMessageDialog(null, "è¯·è‡³å°‘é€‰æ‹©ä¸€ä¸ªæœç´¢ç±»åˆ«", "ç¡®è®¤å¯¹è¯æ¡†", JOptionPane.YES_OPTION);
+			 }else{//å¼€å§‹æœç´¢
 				 isSearching = true;
 				 Maps.clear();
 				 isSearching = true;
@@ -663,20 +663,45 @@ public class MainForm extends JFrame implements ActionListener{
 				 list.setCellRenderer(new MyCellRenderer(AllIcons));
 			 }
 		}
-		else if (e.getSource() == SearchDir) {//Ñ¡ÔñÄ¿Â¼
-			JFileChooser FileChoser=new JFileChooser();                        
+		else if (e.getSource() == SearchDir) {//é€‰æ‹©ç›®å½•
+			JFileChooser FileChoser=new JFileChooser(Cur_URL);                        
 			FileChoser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);  
-			FileChoser.showDialog(new JLabel(), "Ñ¡Ôñ");
+			FileChoser.showDialog(new JLabel(), "é€‰æ‹©");
 		    File file=FileChoser.getSelectedFile();
 		    System.out.println(file); 
 		    if(file.isDirectory()){
 		    	PositionUrl.setText(file.getAbsolutePath());
-	        System.out.println("ÎÄ¼ş¼Ğ:"+file.getAbsolutePath()); 
+	        System.out.println("æ–‡ä»¶å¤¹:"+file.getAbsolutePath()); 
 		    }              
 		    System.out.println(FileChoser.getSelectedFile().getName());        
-		            }
-
-	
+		}
+		else if (e.getSource() == SetName) {
+			Object[] RenameList = list.getSelectedValuesList().toArray();
+			String RenameValue = Revalue.getText();
+			if(BtnQian.isSelected()) {
+				for(int i=0;i<RenameList.length;i++) {
+					File FileData = new File(Cur_URL+RenameList[i]);
+					FileData.renameTo(new File(Cur_URL+RenameValue+RenameList[i]));				
+				}
+			}else {
+				for(int i=0;i<RenameList.length;i++) {
+					String Listfile = RenameList[i].toString();
+					String fileTyle = new String();
+					String fileName = new String();
+					if(Listfile.lastIndexOf(".")!=-1) {
+						fileTyle = Listfile.substring(Listfile.lastIndexOf("."),Listfile.length());		
+						fileName = Listfile.substring(0,Listfile.lastIndexOf("."));
+					}else {
+						fileTyle = "";
+						fileName = Listfile;
+					}					
+					File FileData = new File(Cur_URL+RenameList[i]);
+					FileData.renameTo(new File(Cur_URL+fileName+RenameValue+fileTyle));	
+					System.out.println(fileName+RenameValue+fileTyle+"\n");					
+				}
+			}
+			Go_There();
 		}
 	}
+}
 
