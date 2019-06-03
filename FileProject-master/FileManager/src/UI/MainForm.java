@@ -450,7 +450,14 @@ public class MainForm extends JFrame implements ActionListener{
 		// TODO Auto-generated method stub
         MainForm m = new MainForm();     
 	}
-
+	public boolean IsRenameValue(String RenameValue) {
+		String[] UnValue = {"\\","/","?","*","<",">","\""};
+		for(int i = 0;i<UnValue.length;i++) {
+			if(RenameValue.indexOf(UnValue[i])!=-1)
+				return true;
+		}
+		return false;
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -678,30 +685,36 @@ public class MainForm extends JFrame implements ActionListener{
 		else if (e.getSource() == SetName) {
 			Object[] RenameList = list.getSelectedValuesList().toArray();
 			String RenameValue = Revalue.getText();
-			if(BtnQian.isSelected()) {
-				for(int i=0;i<RenameList.length;i++) {
-					File FileData = new File(Cur_URL+RenameList[i]);
-					FileData.renameTo(new File(Cur_URL+RenameValue+RenameList[i]));				
-				}
-			}else {
-				for(int i=0;i<RenameList.length;i++) {
-					String Listfile = RenameList[i].toString();
-					String fileTyle = new String();
-					String fileName = new String();
-					if(Listfile.lastIndexOf(".")!=-1) {
-						fileTyle = Listfile.substring(Listfile.lastIndexOf("."),Listfile.length());		
-						fileName = Listfile.substring(0,Listfile.lastIndexOf("."));
-					}else {
-						fileTyle = "";
-						fileName = Listfile;
-					}					
-					File FileData = new File(Cur_URL+RenameList[i]);
-					FileData.renameTo(new File(Cur_URL+fileName+RenameValue+fileTyle));	
-					System.out.println(fileName+RenameValue+fileTyle+"\n");					
-				}
+			boolean Error= false;
+			if(IsRenameValue(RenameValue)) {
+				JOptionPane.showMessageDialog(null, "文件夹在命名的时候不能包含下列字符：\r\n【\\ 】【 / 】 【: 】【*】【？】【<】【> 】【| 】【\"】","输入错误",JOptionPane.ERROR_MESSAGE);
+				Error = true;
 			}
-			Go_There();
+			if(!Error) {
+				if(BtnQian.isSelected()) {
+					for(int i=0;i<RenameList.length;i++) {
+						File FileData = new File(Cur_URL+RenameList[i]);
+						FileData.renameTo(new File(Cur_URL+RenameValue+RenameList[i]));				
+					}
+				}else {
+					for(int i=0;i<RenameList.length;i++) {
+						String Listfile = RenameList[i].toString();
+						String fileTyle = new String();
+						String fileName = new String();
+						if(Listfile.lastIndexOf(".")!=-1) {
+							fileTyle = Listfile.substring(Listfile.lastIndexOf("."),Listfile.length());		
+							fileName = Listfile.substring(0,Listfile.lastIndexOf("."));
+						}else {
+							fileTyle = "";
+							fileName = Listfile;
+						}					
+						File FileData = new File(Cur_URL+RenameList[i]);
+						FileData.renameTo(new File(Cur_URL+fileName+RenameValue+fileTyle));	
+						System.out.println(fileName+RenameValue+fileTyle+"\n");					
+					}
+				}
+		    Go_There();
+			}
 		}
 	}
 }
-
