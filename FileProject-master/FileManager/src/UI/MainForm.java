@@ -22,6 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
@@ -84,7 +85,7 @@ public class MainForm extends JFrame implements ActionListener{
 	//新建右键弹出项，没有定义内容
 	JMenuItem[] JMIs = new JMenuItem[10];
 	JMenuItem[] JMIs2 = new JMenuItem[5];
-	JMenuItem delete = new JMenuItem("删除");
+	JMenuItem[] JMIs3 = new JMenuItem[5];
 	public Icon[] AllIcons = new Icon[999999];//存储搜索得到的文件图标
 	public int Icon_Counter = 0;
 	//保存GB,MB,KB,B对应的字节数，方便换算文件大小及单位
@@ -217,11 +218,13 @@ public class MainForm extends JFrame implements ActionListener{
         list = new JList<String>();
         jPopupMenu = new JPopupMenu();//文件/文件夹的属性菜单
         jPopupMenu2 = new JPopupMenu();//磁盘的属性菜单
+        jPopupMenu3 = new JPopupMenu();//多选的属性菜单
         JMIs[0] = new JMenuItem("打开");
         JMIs[1] = new JMenuItem("删除");
         JMIs[2] = new JMenuItem("重命名");
         JMIs[3] = new JMenuItem("属性");
-        for(int k = 0; k < 4; ++k){//文件/文件夹的属性菜单初始化
+        JMIs[4] = new JMenuItem("解散");
+        for(int k = 0; k < 5; ++k){//文件/文件夹的属性菜单初始化
         	JMIs[k].addActionListener(this);
         	jPopupMenu.add(JMIs[k]);            	
         }        
@@ -231,9 +234,12 @@ public class MainForm extends JFrame implements ActionListener{
         	JMIs2[k].addActionListener(this);
         	jPopupMenu2.add(JMIs2[k]);            	
         }    
-        jPopupMenu3 = new JPopupMenu();
-        delete.addActionListener(this);
-        jPopupMenu3.add(delete);
+        JMIs3[0] = new JMenuItem("删除");
+        JMIs3[1] = new JMenuItem("整合文件");
+        for(int k = 0; k < 2; ++k){//磁盘的属性菜单初始化
+        	JMIs3[k].addActionListener(this);
+        	jPopupMenu3.add(JMIs3[k]);            	
+        } 
         list.add(jPopupMenu3);
         list.add(jPopupMenu2);
         list.add(jPopupMenu);
@@ -450,7 +456,6 @@ public class MainForm extends JFrame implements ActionListener{
 		// TODO Auto-generated method stub
         MainForm m = new MainForm();     
 	}
-	//验证重命名是否符合字符规则
 	public boolean IsRenameValue(String RenameValue) {
 		String[] UnValue = {"\\","/","?","*","<",">","\""};
 		for(int i = 0;i<UnValue.length;i++) {
@@ -526,7 +531,7 @@ public class MainForm extends JFrame implements ActionListener{
 			}			
 		}
 		
-		else if(e.getSource() == delete){//多选下的删除
+		else if(e.getSource() == JMIs3[0]){//多选下的删除
 			List<String> selected_str = list.getSelectedValuesList();
 			File file;
 			int num = selected_str.size();
@@ -545,7 +550,62 @@ public class MainForm extends JFrame implements ActionListener{
 				}
 			}						
 		}
-		
+		else if(e.getSource() == JMIs3[1]) {//多选下的整合
+			List<String> Addfiles = list.getSelectedValuesList();
+			File file;
+			SimpleDateFormat sdf = new SimpleDateFormat();// 格式化时间 
+	        //sdf.applyPattern("yyyy-MM-dd_HH-mm-ss"); 
+	        sdf.applyPattern("yyyy-MM-dd");
+	        Date date = new Date();// 获取当前时间
+	        String filenames = new String(Cur_URL+"整合文件夹"+sdf.format(date));
+			file = new File(filenames);
+			if(!file.exists()) {
+				file.mkdir();
+			}
+			for(int i=0;i<Addfiles.size();i++) {
+				file = new File(Cur_URL+Addfiles.get(i));
+				File nowfile = new File(filenames+"\\"+Addfiles.get(i));
+				if(nowfile.exists()) {
+					for(int times=1;;times++){
+						nowfile = new File(filenames+"\\"+Addfiles.get(i)+"-"+times);
+						if(!nowfile.exists())
+							break;
+					}
+				}
+				file.renameTo(nowfile);
+			}
+			Go_There();
+		}
+		else if(e.getSource() == JMIs[4]) {//解散文件夹
+			List<String> Addfiles = list.getSelectedValuesList();
+			File file = new File(Cur_URL+Addfiles.get(0));
+			if(file.isFile()){
+				JOptionPane.showMessageDialog(null, "请选择文件夹","错误",JOptionPane.ERROR_MESSAGE);
+			}
+			else if(file.isDirectory()) {
+				File[] files = file.listFiles();
+				for(int i=0;i<files.length;i++) {
+					file = files[i];
+					File nowfile;
+					String filename = files[i].toString().substring(files[i].toString().lastIndexOf("\\")+1, files[i].toString().length());
+					nowfile = new File(Cur_URL+filename);
+					if(nowfile.exists()) {
+						for(int times=1;;times++){
+							nowfile = new File(Cur_URL+filename+times);
+							
+									if(!nowfile.exists())
+										break;
+						}
+					}
+					file.renameTo(nowfile);
+				}
+				file = new File(Cur_URL+Addfiles.get(0));
+				file.delete();
+				file = new File(Cur_URL+Addfiles.get(0)+1);
+				file.renameTo(new File(Cur_URL+Addfiles.get(0)));
+				Go_There();
+			}
+		}
 		else if(e.getSource() == JMIs[2]){//重命名
 			String before = list.getSelectedValue();
 			File file = new File(Cur_URL + before + "\\");
@@ -683,7 +743,6 @@ public class MainForm extends JFrame implements ActionListener{
 		    }              
 		    System.out.println(FileChoser.getSelectedFile().getName());        
 		}
-		//响应重命名操作
 		else if (e.getSource() == SetName) {
 			Object[] RenameList = list.getSelectedValuesList().toArray();
 			String RenameValue = Revalue.getText();
@@ -720,3 +779,4 @@ public class MainForm extends JFrame implements ActionListener{
 		}
 	}
 }
+
