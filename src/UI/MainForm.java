@@ -42,7 +42,7 @@ public class MainForm extends JFrame implements ActionListener{
 	JTree BigTree;
 	
 //	FilesTree filesTree;
-	//轻量级文件试图，包含滚动条等
+	//轻量级文件试图，包含滚动条等.
 	JScrollPane ScrollShow, TreeShow;
 	//单选按钮，显示那种类型的文件
 	JRadioButton AllFiles,Videos,Text,Picture,Music,BtnQian;
