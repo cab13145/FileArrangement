@@ -450,6 +450,7 @@ public class MainForm extends JFrame implements ActionListener{
 		// TODO Auto-generated method stub
         MainForm m = new MainForm();     
 	}
+	//验证重命名是否符合字符规则
 	public boolean IsRenameValue(String RenameValue) {
 		String[] UnValue = {"\\","/","?","*","<",">","\""};
 		for(int i = 0;i<UnValue.length;i++) {
@@ -682,6 +683,7 @@ public class MainForm extends JFrame implements ActionListener{
 		    }              
 		    System.out.println(FileChoser.getSelectedFile().getName());        
 		}
+		//响应重命名操作
 		else if (e.getSource() == SetName) {
 			Object[] RenameList = list.getSelectedValuesList().toArray();
 			String RenameValue = Revalue.getText();
