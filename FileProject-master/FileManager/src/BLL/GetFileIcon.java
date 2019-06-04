@@ -16,11 +16,11 @@ import java.util.*;
  
 public class GetFileIcon {
 /**
- * ��ȡСͼ��
+ * 获取小图标
  * @param f
  * @return
  */
-	public static Icon getSingleSmallIcon(String path){//��ȡ����Сͼ��
+	public static Icon getSingleSmallIcon(String path){//获取单个小图标
 		FileSystemView fsv = FileSystemView.getFileSystemView();
 		File file = new File(path);
 		Icon icon = fsv.getSystemIcon(file);
@@ -29,7 +29,7 @@ public class GetFileIcon {
 	
 	
     public static Icon[] getSmallIcon(String path)
-    {//��ȡĿ¼�µ�����Сͼ��
+    {//获取目录下的所有小图标
     	Icon[] icons = new Icon[9999999];
     	int counter = 0;
     	if(path == "HOME"){
@@ -42,6 +42,29 @@ public class GetFileIcon {
     	}else{
     	File file = new File(path);
     	File[] files = file.listFiles();
+    	for(File a : files){
+    		if(a != null && a.exists()){
+    			 FileSystemView fsv = FileSystemView.getFileSystemView();    	
+    			 icons[counter++] = fsv.getSystemIcon(a);
+    		}
+    	}
+    	}
+        return icons;
+    }
+    public static Icon[] getSmallIcon2(String path,File[] files)
+    {//获取目录下的所有小图标
+    	Icon[] icons = new Icon[9999999];
+    	int counter = 0;
+    	if(path == "HOME"){
+    		List<String> Disks = MemoryInfo.getDisk();    	
+    		for(int i = 0; i < Disks.size(); ++i){
+    			FileSystemView fsv = FileSystemView.getFileSystemView();
+    			File file = new File(Disks.get(i) + "\\");
+    			icons[counter++] = fsv.getSystemIcon(file);
+    		}	
+    	}else{
+    	//File file = new File(path);
+    	//File[] files = file.listFiles();
     	for(File a : files){
     		if(a != null && a.exists()){
     			 FileSystemView fsv = FileSystemView.getFileSystemView();    	
