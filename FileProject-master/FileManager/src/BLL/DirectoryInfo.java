@@ -12,15 +12,17 @@ public class DirectoryInfo {
 	 }
 	
 	 public long getDirSize(File file) {     
-	        //ÅĞ¶ÏÎÄ¼şÊÇ·ñ´æÔÚ     
+	        //åˆ¤æ–­æ–‡ä»¶æ˜¯å¦å­˜åœ¨     
 	        if (file.exists()) {     
-	            //Èç¹ûÊÇÄ¿Â¼Ôòµİ¹é¼ÆËãÆäÄÚÈİµÄ×Ü´óĞ¡    
+	            //å¦‚æœæ˜¯ç›®å½•åˆ™é€’å½’è®¡ç®—å…¶å†…å®¹çš„æ€»å¤§å°    
 	            if (file.isDirectory()){     	            	
 	            	this.Directory_Num++;
-	                File[] children = file.listFiles();     
-	                long size = 0;     
-	                for (File f : children) 
-	                    size += getDirSize(f);     
+	                File[] children = file.listFiles();  
+	                long size = 0;
+	                if(children != null) {
+		                for (int i = 0;i < children.length;i++) 
+		                    size += getDirSize(children[i]);  
+	                }
 	                return size;     
 	            } else {
 	            	this.File_Num++;
@@ -28,7 +30,7 @@ public class DirectoryInfo {
 	                return size;     
 	            }     
 	        } else {     
-	            System.out.println("ÎÄ¼ş»òÕßÎÄ¼ş¼Ğ²»´æÔÚ£¬Çë¼ì²éÂ·¾¶ÊÇ·ñÕıÈ·£¡");     
+	           // System.out.println("æ–‡ä»¶æˆ–è€…æ–‡ä»¶å¤¹ä¸å­˜åœ¨ï¼Œè¯·æ£€æŸ¥è·¯å¾„æ˜¯å¦æ­£ç¡®ï¼");     
 	            return 0;     
 	        }     
 	    }     
