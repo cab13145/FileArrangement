@@ -42,7 +42,7 @@ public class MainForm extends JFrame implements ActionListener{
 	JTree BigTree;
 	
 //	FilesTree filesTree;
-	//轻量级文件试图，包含滚动条等
+	//轻量级文件试图，包含滚动条等.
 	JScrollPane ScrollShow, TreeShow;
 	//单选按钮，显示那种类型的文件
 	JRadioButton AllFiles,Videos,Text,Picture,Music,BtnQian;
@@ -153,6 +153,8 @@ public class MainForm extends JFrame implements ActionListener{
 		SortTxt = new JLabel("排序");
 		SortList = new JComboBox(Sort_Items);
 		SortType = new JComboBox(Sort_Type_Items);
+		SortList.addActionListener(this);
+		SortType.addActionListener(this);
 		SortPanel.add(SortTxt);
 		SortPanel.add(SortList);
 		SortPanel.add(SortType);
@@ -776,6 +778,178 @@ public class MainForm extends JFrame implements ActionListener{
 				}
 		    Go_There();
 			}
+		}
+		else if(e.getActionCommand().equals("comboBoxChanged")) {
+			String s1 = (String)SortList.getSelectedItem();
+			String s2 = (String)SortType.getSelectedItem();
+			//System.out.println(s1+" "+s2);
+			if(s2.equals("升序")) {
+				if(s1.equals("修改时间")) {
+					defaultListModel.clear();
+					File file = new File(Cur_URL);
+			        File[] files = file.listFiles();
+			        Arrays.sort(files, new Comparator<File>() {
+			            public int compare(File f1, File f2) {
+			                long diff = f1.lastModified() - f2.lastModified();
+			                if (diff > 0)
+			                    return 1;
+			                else if (diff == 0)
+			                    return 0;
+			                else
+			                    return -1;//如果 if 中修改为 返回-1 同时此处修改为返回 1  排序就会是递减
+			            }
+
+			            public boolean equals(Object obj) {
+			                return true;
+			            }
+
+			        });
+					for(int i = 0;i < files.length;i++) {
+						defaultListModel.addElement(files[i].getName());
+						//System.out.println("files[i].getName()");
+					}
+					Icon[] icons = GetFileIcon.getSmallIcon2(Cur_URL,files);
+					list.setModel(defaultListModel);
+					list.setCellRenderer(new MyCellRenderer(icons));
+				}
+				else if(s1.equals("首字母")) {
+					defaultListModel.clear();
+					File file = new File(Cur_URL);
+					File[] files = file.listFiles();
+					Arrays.sort(files,new Comparator<File>() {
+						public int compare(File f1,File f2) {
+							String s1 = f1.getName().toLowerCase();
+							String s2 = f2.getName().toLowerCase();
+							int result = s1.compareTo(s2);
+							if(result == 0)
+								return 0;
+							else if(result == 1)
+								return -1;
+							else 
+								return 1;
+						}
+					});
+					for(int i = 0;i < files.length;i++) {
+						defaultListModel.addElement(files[i].getName());
+					}
+					Icon[] icons = GetFileIcon.getSmallIcon2(Cur_URL,files);
+					list.setModel(defaultListModel);
+					list.setCellRenderer(new MyCellRenderer(icons));
+				}
+				else if(s1.equals("文件大小")) {
+					File file = new File(Cur_URL);
+					File[] files = file.listFiles();
+					defaultListModel.clear();
+					if(files != null) {
+						List<File> fileList = Arrays.asList(files);
+						Collections.sort(fileList, new Comparator<File>() {
+							public int compare(File f1,File f2) {
+								if(f1.isDirectory() && !f2.isDirectory())
+									return -1;
+								else if(!f1.isDirectory() && f2.isDirectory())
+									return 1;
+								else {
+									long num1 = f1.length();
+									long num2 = f2.length();
+									if(num1 > num2) return 1;
+									else if(num1 == num2) return 0;
+									else return -1;
+								}
+							}
+						});
+						for(int i = 0;i < files.length;i++) {
+							defaultListModel.addElement(files[i].getName());
+						}
+						Icon[] icons = GetFileIcon.getSmallIcon2(Cur_URL,files);
+						list.setModel(defaultListModel);
+						list.setCellRenderer(new MyCellRenderer(icons));
+				}
+			}
+			}
+			if(s2.equals("降序")) {
+				if(s1.equals("修改时间")) {
+					defaultListModel.clear();
+					File file = new File(Cur_URL);
+			        File[] files = file.listFiles();
+			        Arrays.sort(files, new Comparator<File>() {
+			            public int compare(File f1, File f2) {
+			                long diff = f1.lastModified() - f2.lastModified();
+			                if (diff > 0)
+			                    return -1;
+			                else if (diff == 0)
+			                    return 0;
+			                else
+			                    return 1;//如果 if 中修改为 返回-1 同时此处修改为返回 1  排序就会是递减
+			            }
+
+			            public boolean equals(Object obj) {
+			                return true;
+			            }
+
+			        });
+					for(int i = 0;i < files.length;i++) {
+						defaultListModel.addElement(files[i].getName());
+						//System.out.println("files[i].getName()");
+					}
+					Icon[] icons = GetFileIcon.getSmallIcon2(Cur_URL,files);
+					list.setModel(defaultListModel);
+					list.setCellRenderer(new MyCellRenderer(icons));
+				}
+				else if(s1.equals("首字母")) {
+					defaultListModel.clear();
+					File file = new File(Cur_URL);
+					File[] files = file.listFiles();
+					Arrays.sort(files,new Comparator<File>() {
+						public int compare(File f1,File f2) {
+							String s1 = f1.getName().toLowerCase();
+							String s2 = f2.getName().toLowerCase();
+							int result = s1.compareTo(s2);
+							if(result == 0)
+								return 0;
+							else if(result == 1)
+								return 1;
+							else 
+								return -1;
+						}
+					});
+					for(int i = 0;i < files.length;i++) {
+						defaultListModel.addElement(files[i].getName());
+					}
+					Icon[] icons = GetFileIcon.getSmallIcon2(Cur_URL,files);
+					list.setModel(defaultListModel);
+					list.setCellRenderer(new MyCellRenderer(icons));
+				}
+				else if(s1.equals("文件大小")) {
+					File file = new File(Cur_URL);
+					File[] files = file.listFiles();
+					defaultListModel.clear();
+					if(files != null) {
+						List<File> fileList = Arrays.asList(files);
+						Collections.sort(fileList, new Comparator<File>() {
+							public int compare(File f1,File f2) {
+								if(f1.isDirectory() && !f2.isDirectory())
+									return 1;
+								else if(!f1.isDirectory() && f2.isDirectory())
+									return -1;
+								else {
+									long num1 = f1.length();
+									long num2 = f2.length();
+									if(num1 > num2) return -1;
+									else if(num1 == num2) return 0;
+									else return 1;
+								}
+							}
+						});
+						for(int i = 0;i < files.length;i++) {
+							defaultListModel.addElement(files[i].getName());
+						}
+						Icon[] icons = GetFileIcon.getSmallIcon2(Cur_URL,files);
+						list.setModel(defaultListModel);
+						list.setCellRenderer(new MyCellRenderer(icons));
+					}
+				}
+			}
+			
 		}
 	}
 }
